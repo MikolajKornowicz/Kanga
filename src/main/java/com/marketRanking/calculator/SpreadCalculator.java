@@ -47,15 +47,31 @@ public class SpreadCalculator {
         return sortedMarkets;
     }
 
-    public List<SortedMarket> spreadCalculator (List<Market> marketList){
+    public List<SortedMarket> spreadCalculator (List<Market> marketList) {
 
         List<SortedMarket> sortedMarkets = marketSorter(marketList);
+        String spread = "/";
+        List<SortedMarket> marketsWithSpread = new ArrayList<>();
 
-        for (SortedMarket sortedMarket : sortedMarkets){
-            if(!sortedMarket.getBestBid().equals("-") && sortedMarket.getBestAsk().equals("-")){
-                sortedMarket.setSpread(String.valueOf((new BigDecimal(sortedMarket.getBestAsk()).subtract(new BigDecimal(sortedMarket.getBestBid()))).subtract(new BigDecimal("0.5").multiply((new BigDecimal(sortedMarket.getBestAsk()).add(new BigDecimal(sortedMarket.getBestBid())))))));
+        for (SortedMarket sortedMarket : sortedMarkets) {
+
+            if (!sortedMarket.getBestBid().equals("-") && !sortedMarket.getBestAsk().equals("-")) {
+
+                double bid = Double.parseDouble(sortedMarket.getBestBid());
+                double ask = Double.parseDouble(sortedMarket.getBestAsk());
+
+                double nominator = (ask - bid);
+                double denominator = (ask + bid);
+                spread = String.valueOf((nominator / (0.5 * denominator)) * 100);
+
+                marketsWithSpread.add(new SortedMarket(sortedMarket.getTicker_id(), sortedMarket.getBestBid(), sortedMarket.getBestAsk(), spread + "%"));
+
+            } else {
+                marketsWithSpread.add(new SortedMarket(sortedMarket.getTicker_id(), sortedMarket.getBestBid(), sortedMarket.getBestAsk(), "-"));
+
             }
+
         }
-        return sortedMarkets;
+        return marketsWithSpread;
     }
 }
