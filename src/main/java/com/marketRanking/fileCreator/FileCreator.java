@@ -35,16 +35,34 @@ public class FileCreator {
     GregorianCalendar gc = new GregorianCalendar();
     String dateString = sdf.format(gc.getTime());
 
-    public void generateReport (List<SortedMarket> markets) {
+    public void generateReport(List<SortedMarket> markets) {
         try {
             FileWriter myWriter = new FileWriter("report_spread_" + dateString + ".txt");
-            for(SortedMarket market : markets)
-            myWriter.write(market.getTicker_id() + "\n" + market.getBestBid()+ " " + market.getBestAsk()+ " || "+ market.getSpread() + "\n");
-            myWriter.close();
-            System.out.println("Successfully wrote to the file.");
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+
+            myWriter.write("Spread <= 2%" + "\n" + "Nazwa rynku Spread[%]" + "\n");
+            for (SortedMarket market : markets) {
+                if (market.getGroup() == 1) {
+                    myWriter.write(market.getTicker_id() + " " + market.getSpread() + "\n");
+                }
+            }
+
+            myWriter.write("Spread <= 2%" + "\n" + "Nazwa rynku Spread[%]" + "\n");
+            for (SortedMarket market : markets) {
+                if (market.getGroup() == 1) {
+                    myWriter.write(market.getTicker_id() + " " + market.getSpread() + "\n");
+                }
+            }
+
+            myWriter.write("Spread <= 2%" + "\n" + "Nazwa rynku Spread[%]" + "\n");
+            for (SortedMarket market : markets) {
+                if (market.getGroup() == 3) {
+                    myWriter.write(market.getTicker_id() + " " + market.getSpread() + "\n");
+                }
+            }
+                myWriter.close();
+                } catch(IOException e){
+                    System.out.println("An error occurred.");
+                    e.printStackTrace();
+                }
+            }
         }
-    }
-}

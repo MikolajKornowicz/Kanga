@@ -38,7 +38,7 @@ public class MarketFacade {
     }
 
     public void getSortedMarkets(){
-        fileCreator.generateReport(spreadCalculator.spreadCalculator(mapper.mapMarketDtoListToMarketList(kangaClient.getMarkets())));
+        fileCreator.generateReport(spreadCalculator.spreadSorter(mapper.mapMarketDtoListToMarketList(kangaClient.getMarkets())));
 
     }
 }

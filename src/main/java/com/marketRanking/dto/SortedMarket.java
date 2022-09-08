@@ -20,4 +20,5 @@ public class SortedMarket {
     private String bestBid;
     private String bestAsk;
     private String spread;
+    private int group;
 }

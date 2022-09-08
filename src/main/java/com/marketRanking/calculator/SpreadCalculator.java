@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Data
@@ -34,11 +36,11 @@ public class SpreadCalculator {
                 if (market.getAsks().get(0).compareTo(bestAsk) > 0) {
                     bestAsk = market.getAsks().get(0);
                 }
-                sortedMarkets.add(new SortedMarket(market.getTicker_id(), String.valueOf(bestBid), String.valueOf(bestAsk), "-"));
+                sortedMarkets.add(new SortedMarket(market.getTicker_id(), String.valueOf(bestBid), String.valueOf(bestAsk), "-", 0));
 
             } catch (IndexOutOfBoundsException e) {
                 System.out.println(e.getMessage());
-                sortedMarkets.add(new SortedMarket(market.getTicker_id(), "-", "-", "-"));
+                sortedMarkets.add(new SortedMarket(market.getTicker_id(), "-", "-", "-", 0));
                 continue;
             }
 
@@ -64,14 +66,40 @@ public class SpreadCalculator {
                 double denominator = (ask + bid);
                 spread = String.valueOf((nominator / (0.5 * denominator)) * 100);
 
-                marketsWithSpread.add(new SortedMarket(sortedMarket.getTicker_id(), sortedMarket.getBestBid(), sortedMarket.getBestAsk(), spread + "%"));
+                marketsWithSpread.add(new SortedMarket(sortedMarket.getTicker_id(), sortedMarket.getBestBid(), sortedMarket.getBestAsk(), spread, 0));
 
             } else {
-                marketsWithSpread.add(new SortedMarket(sortedMarket.getTicker_id(), sortedMarket.getBestBid(), sortedMarket.getBestAsk(), "-"));
+                marketsWithSpread.add(new SortedMarket(sortedMarket.getTicker_id(), sortedMarket.getBestBid(), sortedMarket.getBestAsk(), "-", 0));
 
             }
 
         }
         return marketsWithSpread;
+    }
+
+    public List<SortedMarket> spreadSorter (List<Market> marketList){
+
+        List<SortedMarket> markets = spreadCalculator(marketList);
+        List<SortedMarket> sortedMarkets = new ArrayList<>();
+
+        for (SortedMarket market : markets) {
+            if (!market.getSpread().equals("-")){
+                double spread = Double.parseDouble(market.getSpread());
+            if (spread <= 2) {
+                sortedMarkets.add(new SortedMarket(market.getTicker_id(), market.getBestBid(), market.getBestAsk(), market.getSpread(), 1));
+            }
+            if (spread > 2) {
+                sortedMarkets.add(new SortedMarket(market.getTicker_id(), market.getBestBid(), market.getBestAsk(), market.getSpread(), 2));
+            }
+        }
+            else {
+                sortedMarkets.add(new SortedMarket(market.getTicker_id(), market.getBestBid(), market.getBestAsk(), market.getSpread(), 3));
+            }
+        }
+        sortedMarkets = sortedMarkets.stream()
+                .sorted((o1, o2) -> o1.getGroup())
+                .collect(Collectors.toList());
+        return sortedMarkets;
+
     }
 }
