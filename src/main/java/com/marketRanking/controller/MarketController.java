@@ -17,14 +17,27 @@ public class MarketController {
 
     private final MarketFacade marketFacade;
 
+    /*
 @RequestMapping(method = RequestMethod.GET, value = "/market")
     public MarketDto getData (){
     return marketFacade.getMarketData();
 }
 
+     */
+
 @GetMapping(value = "/pairs")
     public List<MarketRatingDto> getMarketPairs (){
     return marketFacade.getPairs();
+}
+
+@GetMapping(value = "/markets")
+    public List<MarketDto> getAllMarketsData(){
+    return marketFacade.getAllMarketsData();
+}
+
+@GetMapping(value = "report")
+    public void getReport (){
+    marketFacade.getSortedMarkets();
 }
 
 }

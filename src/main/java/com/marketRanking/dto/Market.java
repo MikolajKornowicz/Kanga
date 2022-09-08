@@ -1,8 +1,6 @@
 package com.marketRanking.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -13,10 +11,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+
 public class Market {
 
     private long timestamp;
     private List<BigDecimal> bids;
     private List<BigDecimal> asks;
-    private String ticker_id;
+    private  String ticker_id;
 }

@@ -35,7 +35,7 @@ public class KangaClient {
             return Optional.ofNullable(marketResponse)
                     .orElseThrow(MarketNotFoundException::new);
         } catch (MarketNotFoundException e){
-            LOGGER.error(e.getMessage(), e);it
+            LOGGER.error(e.getMessage(), e);
             return new MarketDto();
         }
         }
@@ -58,5 +58,27 @@ public class KangaClient {
                 LOGGER.error(e.getMessage());
                 return Collections.emptyList();
             }
+        }
+
+        public List<MarketDto> getMarkets (){
+
+        List<MarketRatingDto> marketList = getPairs();
+        List<MarketDto> markets = new ArrayList<>();
+
+            for (MarketRatingDto marketRatingDto : marketList) {
+                URI url = UriComponentsBuilder.fromHttpUrl("https://public.kanga.exchange/api/market/orderbook/" + marketRatingDto.getTicker_id())
+                        .build()
+                        .encode()
+                        .toUri();
+
+                try {
+                   markets.add(restTemplate.getForObject(url, MarketDto.class));
+                } catch (RestClientException e){
+                    LOGGER.error(e.getMessage());
+                    return Collections.emptyList();
+                }
+            }
+
+            return markets;
         }
     }

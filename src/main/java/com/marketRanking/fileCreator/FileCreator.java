@@ -2,6 +2,7 @@ package com.marketRanking.fileCreator;
 
 import com.marketRanking.dto.Market;
 import com.marketRanking.dto.MarketDto;
+import com.marketRanking.dto.SortedMarket;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.joda.time.DateTime;
@@ -23,6 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -33,10 +35,11 @@ public class FileCreator {
     GregorianCalendar gc = new GregorianCalendar();
     String dateString = sdf.format(gc.getTime());
 
-    public void generateReport (Market market) {
+    public void generateReport (List<SortedMarket> markets) {
         try {
             FileWriter myWriter = new FileWriter("report_spread_" + dateString + ".txt");
-            myWriter.write(market.getTicker_id() + "\n" + market.getBids()+ "\n" + market.getAsks());
+            for(SortedMarket market : markets)
+            myWriter.write(market.getTicker_id() + "\n" + market.getBestBid()+ " " + market.getBestAsk()+ " || "+ market.getSpread() + "\n");
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {

@@ -1,9 +1,11 @@
 package com.marketRanking.facade;
 
+import com.marketRanking.calculator.SpreadCalculator;
 import com.marketRanking.client.KangaClient;
 import com.marketRanking.dto.MarketDto;
 import com.marketRanking.dto.MarketMapper;
 import com.marketRanking.dto.MarketRatingDto;
+import com.marketRanking.dto.SortedMarket;
 import com.marketRanking.fileCreator.FileCreator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,13 +19,26 @@ public class MarketFacade {
     private final KangaClient kangaClient;
     private final MarketMapper mapper;
     private final FileCreator fileCreator;
+    private final SpreadCalculator spreadCalculator;
 
+    /*
     public MarketDto getMarketData (){
         fileCreator.generateReport(mapper.mapMarketDtoToMarket(kangaClient.getMarket()));
         return kangaClient.getMarket();
     }
 
+     */
+
     public List<MarketRatingDto> getPairs (){
         return kangaClient.getPairs();
+    }
+
+    public List<MarketDto> getAllMarketsData (){
+        return kangaClient.getMarkets();
+    }
+
+    public void getSortedMarkets(){
+        fileCreator.generateReport(spreadCalculator.spreadCalculator(mapper.mapMarketDtoListToMarketList(kangaClient.getMarkets())));
+
     }
 }
