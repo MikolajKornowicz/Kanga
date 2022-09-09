@@ -24,21 +24,6 @@ public class KangaClient {
     private final RestTemplate restTemplate;
 
 
-    public MarketDto getMarket(){
-        URI url = UriComponentsBuilder.fromHttpUrl("https://public.kanga.exchange/api/market/orderbook/BTC_USD")
-                .build()
-                .encode()
-                .toUri();
-
-        try {
-            MarketDto marketResponse = restTemplate.getForObject(url, MarketDto.class);
-            return Optional.ofNullable(marketResponse)
-                    .orElseThrow(MarketNotFoundException::new);
-        } catch (MarketNotFoundException e){
-            LOGGER.error(e.getMessage(), e);
-            return new MarketDto();
-        }
-        }
 
         public List<MarketRatingDto> getPairs (){
             URI url = UriComponentsBuilder.fromHttpUrl("https://public.kanga.exchange/api/market/pairs")

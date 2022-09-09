@@ -42,21 +42,21 @@ public class FileCreator {
             myWriter.write("Spread <= 2%" + "\n" + "Nazwa rynku Spread[%]" + "\n");
             for (SortedMarket market : markets) {
                 if (market.getGroup() == 1) {
-                    myWriter.write(market.getTicker_id() + " " + market.getSpread() + "\n");
+                    myWriter.write(market.getTicker_id() + " " + market.getSpread() + "%" +"\n");
                 }
             }
 
             myWriter.write("Spread <= 2%" + "\n" + "Nazwa rynku Spread[%]" + "\n");
             for (SortedMarket market : markets) {
                 if (market.getGroup() == 1) {
-                    myWriter.write(market.getTicker_id() + " " + market.getSpread() + "\n");
+                    myWriter.write(market.getTicker_id() + " " + market.getSpread() + "%" + "\n");
                 }
             }
 
             myWriter.write("Spread <= 2%" + "\n" + "Nazwa rynku Spread[%]" + "\n");
             for (SortedMarket market : markets) {
                 if (market.getGroup() == 3) {
-                    myWriter.write(market.getTicker_id() + " " + market.getSpread() + "\n");
+                    myWriter.write(market.getTicker_id() + " " + market.getSpread() + "%" + "\n");
                 }
             }
                 myWriter.close();

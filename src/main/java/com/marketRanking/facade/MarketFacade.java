@@ -21,13 +21,6 @@ public class MarketFacade {
     private final FileCreator fileCreator;
     private final SpreadCalculator spreadCalculator;
 
-    /*
-    public MarketDto getMarketData (){
-        fileCreator.generateReport(mapper.mapMarketDtoToMarket(kangaClient.getMarket()));
-        return kangaClient.getMarket();
-    }
-
-     */
 
     public List<MarketRatingDto> getPairs (){
         return kangaClient.getPairs();
